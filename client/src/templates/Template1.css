@@ -1,0 +1,67 @@
+.template-container {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    border: 2px solid #4CAF50;
+    padding: 20px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+  }
+  
+  .template-container h1 {
+    color: #4CAF50;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .template-container p {
+    margin: 5px 0;
+    font-size: 16px;
+  }
+  
+  .template-container h2 {
+    color: #333;
+    font-size: 20px;
+    margin-top: 20px;
+    border-bottom: 2px solid #4CAF50;
+  }
+  
+  .template-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .template-container li {
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  
+  .resume-item {
+    margin-bottom: 20px;
+  }
+  
+  .personal-info h2,
+  .career-objective h2,
+  .education h2,
+  .projects h2,
+  .technical-skills h2,
+  .interests h2,
+  .achievements h2,
+  .responsibilities h2 {
+    color: #333;
+    font-size: 20px;
+    margin-top: 20px;
+    border-bottom: 2px solid #4CAF50;
+  }
+  
+  .edu-item {
+    margin-bottom: 10px;
+  }
+  
+  .project-item {
+    margin-bottom: 10px;
+  }
+  
+  .achievement-item {
+    margin-bottom: 10px;
+  }
+  

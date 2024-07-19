@@ -1,0 +1,54 @@
+.home-page {
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif, sans-serif;
+  }
+  
+  .header {
+    background-color: #282c34;
+    padding: 20px;
+    color: white;
+  }
+  
+  .main-content {
+    padding: 20px;
+  }
+  
+  .content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .image-container {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .cover-letter-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .text-container {
+    flex: 1;
+    padding: 20px;
+    text-align: left;
+  }
+  
+  .description {
+    margin-bottom: 20px;
+  }
+  
+  .btn-generate {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #61dafb;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn-generate:hover {
+    background-color: #21a1f1;
+  }
+  
