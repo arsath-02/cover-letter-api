@@ -46,7 +46,7 @@ async def generate_cover_letter(file: UploadFile = File(...)):
     else:
         raise HTTPException(status_code=400, detail="Unsupported file type")
     
-    query = "generate a very short and crisp,resume analysis for the resume content" + text +"using the details given  and give me percentage of the posibilities to get an job on which role"
+    query = "generate a short and crisp, professional and instantly hirable cover letter for the resume content" + text +"using the details given "
     response, history = llm_model.chat(tokenizer, query=query, history=None)
     
     return  response
