@@ -1,6 +1,6 @@
 import os
 import torch
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer
 import PyPDF2
 import uvicorn
 from fastapi import FastAPI, UploadFile, File, HTTPException
@@ -17,9 +17,9 @@ app.add_middleware(
     allow_headers=["*"], 
 )
 
-# Load BART model and tokenizer for cover letter generation
-tokenizer_bart = AutoTokenizer.from_pretrained("facebook/bart-large-cnn")
-bart_model = AutoModelForSeq2SeqLM.from_pretrained("facebook/bart-large-cnn")
+# Load LLaMA 3 model and tokenizer for cover letter generation
+tokenizer_llama = AutoTokenizer.from_pretrained("meta-llama/Llama-3-13b")
+llama_model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3-13b", device_map="auto")
 
 ngrok.set_auth_token("2a1iGE4Q5SDAF4mhdAVXeNptwJd_2GBcW2ACMaj2JoAJy8Gtt")
 listener = ngrok.forward("127.0.0.1:5000", authtoken_from_env=True, domain="apparent-wolf-obviously.ngrok-free.app")
@@ -40,12 +40,13 @@ async def generate_cover_letter(file: UploadFile = File(...)):
     else:
         raise HTTPException(status_code=400, detail="Unsupported file type")
     
-    # Prepare the input for BART model
-    inputs = tokenizer_bart(text, return_tensors="pt", max_length=1024, truncation=True)
+    # Prepare the input for LLaMA model
+    prompt = f"Generate a short and crisp, professional cover letter for the following resume content:\n\n{text}"
+    inputs = tokenizer_llama(prompt, return_tensors="pt", max_length=2048, truncation=True)
     
     # Generate the cover letter
-    summary_ids = bart_model.generate(inputs["input_ids"], max_length=200, num_beams=4, early_stopping=True)
-    cover_letter = tokenizer_bart.decode(summary_ids[0], skip_special_tokens=True)
+    output = llama_model.generate(inputs["input_ids"], max_length=300, num_beams=4, early_stopping=True)
+    cover_letter = tokenizer_llama.decode(output[0], skip_special_tokens=True)
     
     return {"cover_letter": cover_letter}
 
