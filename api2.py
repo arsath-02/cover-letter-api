@@ -48,7 +48,7 @@ async def generate_cover_letter(file: UploadFile = File(...)):
     outputs = bert_model(**inputs)
     sentiment = torch.argmax(outputs.logits, dim=-1).item()
 
-    # Refine the query to ensure short, crisp, and necessary content
+    # Sample cover letter as a structure guide
     sample_cover_letter = """
 Dear Hiring Manager,
 
@@ -66,24 +66,26 @@ Sincerely,
 Sathiyaseelan Selvam
 """
     
+    # Generate prompt by incorporating resume content into the structure
     if sentiment == 1:
         query = (
-            "Based on the resume content provided, generate a short, crisp, and professional cover letter. "
-            "Please ensure the cover letter is similar in style and content to the following sample, but tailored to the provided resume text: "
-            f"{sample_cover_letter}\nResume Content: {text}"
+            "Using the resume content provided, generate a cover letter that is short, crisp, and professional. "
+            "The cover letter should follow the structure and tone of the following sample, but be customized to reflect the resume's details:\n"
+            f"{sample_cover_letter}\n\nResume Content:\n{text}"
         )
     else:
         query = (
-            "Create a short and formal cover letter using the resume content provided. "
-            "Make it concise, focusing on essential qualifications and experience. "
-            "Use the following sample as a reference for tone and structure: "
-            f"{sample_cover_letter}\nResume Content: {text}"
+            "Create a short, formal cover letter using the resume content provided. "
+            "Focus on essential qualifications and experience. The tone should be similar to the following sample, but use the actual resume content:\n"
+            f"{sample_cover_letter}\n\nResume Content:\n{text}"
         )
 
     # Generate the cover letter using Qwen
-    response, history = llm_model_qwen.chat(tokenizer_qwen, query=query, history=None)
+    inputs = tokenizer_qwen(query, return_tensors="pt")
+    response = llm_model_qwen.generate(**inputs, max_length=512)
+    generated_cover_letter = tokenizer_qwen.decode(response[0], skip_special_tokens=True)
     
-    return {"cover_letter": response}
+    return {"cover_letter": generated_cover_letter}
 
 
 if __name__ == "__main__":
