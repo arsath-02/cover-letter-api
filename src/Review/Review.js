@@ -5,21 +5,17 @@ import './Review.css';
 
 const ReviewPage = () => {
   const location = useLocation();
-  const { coverLetter } = location.state || { coverLetter: '' };
   const [displayedText, setDisplayedText] = useState('');
 
   useEffect(() => {
-    let index = 0;
-    const typingInterval = setInterval(() => {
-      if (index < coverLetter.length) {
-        setDisplayedText((prev) => prev + coverLetter[index]);
-        index++;
-      } else {
-        clearInterval(typingInterval);
-      }
-    }, 50); 
-    return () => clearInterval(typingInterval);
-  }, [coverLetter]);
+    if (location.state && location.state.coverLetter) {
+      console.log('Cover letter received in ReviewPage:', location.state.coverLetter);
+      setDisplayedText(location.state.coverLetter); 
+    } else {
+      console.error('Cover letter is empty or undefined.');
+    }
+  }, [location.state]);
+  
 
   const handleDownload = () => {
     const element = document.getElementById('cover-letter-content');
@@ -41,7 +37,7 @@ const ReviewPage = () => {
       </header>
       <main className="main-content">
         <div id="cover-letter-content" className="cover-letter-container">
-          <p className="typing-animation">{displayedText}</p>
+          {displayedText ? <p>{displayedText}</p> : <p>No cover letter available</p>}
         </div>
         <button onClick={handleDownload} className="btn-download">
           Download Cover Letter
