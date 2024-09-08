@@ -67,7 +67,7 @@ async def generate_cover_letter(file: UploadFile = File(...)):
     # Generate the cover letter using Qwen
     response, history = llm_model_qwen.chat(tokenizer_qwen, query=query, history=None)
     
-    return {"cover_letter": response}
+    return response
 
 
 if __name__ == "__main__":
