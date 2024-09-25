@@ -1,11 +1,10 @@
 const express = require('express');
 const multer = require('multer');
-const { PDFDocument } = require('pdf-lib');
-const { Document } = require('docx');
+const pdfParse = require('pdf-parse');
 const Tesseract = require('tesseract.js');
-const path = require('path');
-const fs = require('fs');
 const { Readable } = require('stream');
+const fetch = require('node-fetch');
+require('dotenv').config();
 
 const app = express();
 const port = 5000;
@@ -16,6 +15,8 @@ const upload = multer({ storage: storage });
 
 // Middleware to handle JSON requests
 app.use(express.json());
+const cors = require('cors');
+app.use(cors());
 
 // Convert buffer to readable stream
 const bufferToStream = (buffer) => {
@@ -26,20 +27,14 @@ const bufferToStream = (buffer) => {
   return readable;
 };
 
-// Function to extract text from a PDF file
+// Function to extract text from a PDF file using pdf-parse
 const extractTextFromPDF = async (buffer) => {
-  const pdfDoc = await PDFDocument.load(buffer);
-  const pages = pdfDoc.getPages();
-  const textPromises = pages.map(async (page) => page.getTextContent());
-  const textContents = await Promise.all(textPromises);
-  return textContents.map(textContent => textContent.items.map(item => item.str).join(' ')).join('\n');
-};
-
-// Function to extract text from a DOCX file
-const extractTextFromDOCX = async (buffer) => {
-  const doc = new Document(buffer);
-  const text = doc.getBody().getText();
-  return text;
+  try {
+    const data = await pdfParse(buffer);
+    return data.text;
+  } catch (error) {
+    throw new Error('Failed to extract text from PDF');
+  }
 };
 
 // Function to extract text from images using Tesseract
@@ -56,49 +51,65 @@ const extractTextFromImage = async (buffer) => {
   });
 };
 
+// Replace this with your actual ngrok URL
+const ngrokURL = 'https://2543-34-44-211-240.ngrok-free.app';
+
 // Endpoint for extracting information from the uploaded file
 app.post('/extract_info', upload.single('file'), async (req, res) => {
+  console.log('Received file upload request');
   try {
     const file = req.file;
     if (!file) {
+      console.log('No file uploaded');
       return res.status(400).json({ error: 'No file uploaded' });
     }
+
+    console.log('File uploaded:', file.originalname);
 
     let extractedText = '';
 
     if (file.mimetype === 'application/pdf') {
       extractedText = await extractTextFromPDF(file.buffer);
-    } else if (file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-      extractedText = await extractTextFromDOCX(file.buffer);
     } else if (file.mimetype.startsWith('image/')) {
       extractedText = await extractTextFromImage(file.buffer);
     } else {
+      console.log('Unsupported file type');
       return res.status(400).json({ error: 'Unsupported file type' });
     }
 
-    // Process the extracted text to structure it if necessary
-    const extractedInfo = {
-      text: extractedText,
-      // You can add additional text processing logic here
-    };
+    console.log('Extracted text:', extractedText);
 
-    res.json({
-      message: 'File uploaded and information extracted successfully',
-      extracted_info: extractedInfo
-    });
+    try {
+      const response = await fetch(`${ngrokURL}/generate_cover_letter`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ text: extractedText })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        res.json({
+          message: 'File uploaded and information extracted successfully',
+          extracted_info: data
+        });
+      } else {
+        const errorData = await response.json();
+        console.error('Error from Flask server:', errorData);
+        res.status(response.status).json(errorData);
+      }
+    } catch (error) {
+      console.error('Error generating cover letter:', error);
+      res.status(500).json({ error: 'Failed to generate cover letter. Please try again.' });
+    }
   } catch (error) {
     console.error('Error extracting information:', error);
     res.status(500).json({ error: 'Failed to extract information from the file. Please try again.' });
   }
 });
 
-// Serve the React frontend
-app.use(express.static(path.join(__dirname, 'build')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
+

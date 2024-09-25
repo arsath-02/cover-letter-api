@@ -1,0 +1,167 @@
+/* BuildForm.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: #f0f4f7;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .build-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    width: 100%;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  .build-form h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .step-counter {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #777;
+  }
+  
+  .form-step {
+    display: none;
+  }
+  
+  .form-step-active {
+    display: block;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .form-group input, 
+  .form-group textarea, 
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: border-color 0.3s ease-in-out;
+    box-sizing: border-box; /* Added to ensure padding and border are included in the element's total width and height */
+  }
+  
+  .form-group textarea {
+    resize: vertical; /* Allows vertical resize but not horizontal */
+    min-height: 80px; /* Minimum height to ensure it fits well */
+    max-height: 150px; /* Maximum height to prevent overflow */
+  }
+  
+  .form-group input:focus, 
+  .form-group textarea:focus, 
+  .form-group select:focus {
+    border-color: #66afe9;
+    outline: none;
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+  }
+  
+  .form-group input:hover, 
+  .form-group textarea:hover, 
+  .form-group select:hover {
+    border-color: #aaa;
+  }
+  
+  .btn-next, 
+  .btn-prev, 
+  .btn-submit {
+    background: #4CAFF0;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+  
+  .btn-next:hover, 
+  .btn-prev:hover, 
+  .btn-submit:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  .btn-next:active, 
+  .btn-prev:active, 
+  .btn-submit:active {
+    background: #003f7f;
+    transform: scale(1);
+  }
+  
+  .btn-prev {
+    margin-right: 10px;
+  }
+  
+  .btn-next, .btn-submit {
+    float: right;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .form-group input, 
+  .form-group textarea, 
+  .form-group select {
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  .form-group input:hover, 
+  .form-group textarea:hover, 
+  .form-group select:hover {
+    background: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-next, 
+  .btn-prev, 
+  .btn-submit {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn-next:hover, 
+  .btn-prev:hover, 
+  .btn-submit:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn-next:active, 
+  .btn-prev:active, 
+  .btn-submit:active {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  

@@ -1,0 +1,22 @@
+{
+  "name": "cover_letter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mhmd-sameer/cover_letter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mhmd-sameer/cover_letter/issues"
+  },
+  "homepage": "https://github.com/mhmd-sameer/cover_letter#readme",
+  "dependencies": {
+    "ngrok": "^5.0.0-beta.2"
+  }
+}
