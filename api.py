@@ -26,10 +26,11 @@ app.add_middleware(
 tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen-VL-Chat", trust_remote_code=True) 
 llm_model = AutoModelForCausalLM.from_pretrained("sanjay-29-29/GreenAI", trust_remote_code=True, device_map='auto') 
 history = None
-ngrok.set_auth_token("2a1iGE4Q5SDAF4mhdAVXeNptwJd_2GBcW2ACMaj2JoAJy8Gtt")
-listener = ngrok.forward("127.0.0.1:5000", authtoken_from_env=True, domain="apparent-wolf-obviously.ngrok-free.app")
+ngrok.set_auth_token("2osPePeNyQpwLSCci3lRPr3YMSH_55VPAMnGRvRfNT8ZeruBi")
+listener = ngrok.forward("127.0.0.1:5000", authtoken_from_env=True, domain="integral-notably-squid.ngrok-free.app")
 
-
+#apparent-wolf-obviously.ngrok-free.app
+#2a1iGE4Q5SDAF4mhdAVXeNptwJd_2GBcW2ACMaj2JoAJy8Gtt
 
 @app.post("/generate_cover_letter")
 async def generate_cover_letter(file: UploadFile = File(...)):
